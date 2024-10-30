@@ -1,6 +1,7 @@
 package com.PersonalProject.identity_service.dto.response;
 
 import com.PersonalProject.identity_service.enity.Role;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -18,7 +19,6 @@ public class UserResponse {
     String firstName;
     String lastName;
     String username;
-    String password;
     LocalDate dob;
-    Set<Role> roles;
+    Set<RoleResponse> roles;
 }

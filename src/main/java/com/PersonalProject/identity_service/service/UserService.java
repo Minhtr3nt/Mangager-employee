@@ -1,11 +1,12 @@
 package com.PersonalProject.identity_service.service;
 
+import com.PersonalProject.identity_service.constant.PredefinedRole;
 import com.PersonalProject.identity_service.dto.request.RoleRequest;
 import com.PersonalProject.identity_service.dto.request.UserCreationRequest;
 import com.PersonalProject.identity_service.dto.request.UserUpdateRequest;
 import com.PersonalProject.identity_service.dto.response.UserResponse;
+import com.PersonalProject.identity_service.enity.Role;
 import com.PersonalProject.identity_service.enity.User;
-import com.PersonalProject.identity_service.enums.Role;
 import com.PersonalProject.identity_service.exception.AppException;
 import com.PersonalProject.identity_service.exception.ErrorCode;
 import com.PersonalProject.identity_service.mapper.UserMapper;
@@ -23,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -44,13 +46,13 @@ public class UserService {
 
         User user = userMapper.toUser(request);
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
 
-        HashSet<String> roles = new HashSet<>();
-        roles.add(Role.USER.name());
+        HashSet<Role> roles = new HashSet<>();
+        roleRepository.findById(PredefinedRole.USER_ROLE).ifPresent(roles::add);
 
 
-        //user.setRoles(roles);
+        user.setRoles(roles);
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
@@ -64,7 +66,7 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-    @PreAuthorize("hasRole('APPROVE_POST')")
+
     public List<UserResponse> getUsers(){
         return userRepository.findAll().stream()
                 .map(userMapper::toUserResponse).toList();
@@ -79,8 +81,8 @@ public class UserService {
 
         var roles = roleRepository.findAllById(request.getRoles());
         user.setRoles(new HashSet<>(roles));
-
-        return userMapper.toUserResponse(userRepository.save(user));
+        var User = userRepository.save(user);
+        return userMapper.toUserResponse(User);
     }
     @PostAuthorize("returnObject.username == authentication.name") // Khi mà user name truyền vào trùng với username trả về thì cho phép chạy
     public UserResponse getUser(String Id){
