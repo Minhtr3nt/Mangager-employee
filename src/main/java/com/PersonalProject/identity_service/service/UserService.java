@@ -66,8 +66,9 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-
+    @PreAuthorize("hasAuthority('APPROVE_POST')")
     public List<UserResponse> getUsers(){
+
         return userRepository.findAll().stream()
                 .map(userMapper::toUserResponse).toList();
     }

@@ -29,13 +29,13 @@ public class ApplicationInitConfig {
 
         return args -> {
             if(userRepository.findByUsername("admin").isEmpty()){
-              //  var roles = new HashSet<String>();
-               // roleRepository.findById(PredefinedRole.ADMIN_ROLE).ifPresent(roles::add);
+                var roles = new HashSet<Role>();
+                roleRepository.findById(PredefinedRole.ADMIN_ROLE).ifPresent(roles::add);
 
                 User user = User.builder()
                         .username("admin")
                         .password(passwordEncoder.encode("admin"))
-                       // .roles(roles)
+                        .roles(roles)
                         .build();
                 userRepository.save(user);
                 log.warn("admin user has  been created with default password: " +

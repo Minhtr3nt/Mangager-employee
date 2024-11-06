@@ -57,11 +57,12 @@
 
 		</dependency>
 		<dependency>
-			<groupId>com.xebialabs.restito</groupId>
-			<artifactId>restito</artifactId>
-			<version>0.9.3</version>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+
 		<dependency>
 			<groupId>com.fasterxml.jackson.datatype</groupId>
 			<artifactId>jackson-datatype-jsr310</artifactId>

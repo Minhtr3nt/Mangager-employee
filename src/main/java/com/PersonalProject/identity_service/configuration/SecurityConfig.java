@@ -22,7 +22,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 @Configuration
 @EnableWebSecurity
-@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
     private final String[] PUBLIC_ENDPOINTS ={"/users", "/auth/token", "/auth/introspect"};

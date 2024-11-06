@@ -1,5 +1,6 @@
 package com.PersonalProject.identity_service.dto.request;
 
+import com.PersonalProject.identity_service.validator.DobConstraint;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -19,6 +20,8 @@ public class UserCreationRequest {
 
     @Size(min = 8 , message = "PASSWORD_INVALID")
     String password;
+
+    @DobConstraint(min = 18, message = "INVALID_DOB")
     LocalDate dob;
 
 
