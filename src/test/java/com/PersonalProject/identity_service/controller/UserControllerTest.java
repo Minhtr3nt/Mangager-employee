@@ -41,8 +41,6 @@ import java.util.Set;
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UserControllerTest {
-    @Autowired
-    private RoleRepository roleRepository;
 
     @Autowired
     private MockMvc mockMvc;
