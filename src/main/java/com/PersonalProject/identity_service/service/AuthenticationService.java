@@ -59,6 +59,7 @@ public class AuthenticationService {
     protected String SIGNER_KEY ;
 
     public AuthenticationResponse authenticate(AuthenticationRequest request){
+       log.info("Signer key: {}", SIGNER_KEY);
         var user =userRepository.findByUsername(request.getUsername())
                 .orElseThrow(()-> new AppException(ErrorCode.USER_NOT_EXISTED));
 
@@ -137,6 +138,9 @@ public class AuthenticationService {
 
         var jit = signedJWT.getJWTClaimsSet().getJWTID();
         var expiryTime = signedJWT.getJWTClaimsSet().getExpirationTime();
+
+
+
 
         InvalidatedToken invalidatedToken = InvalidatedToken.builder()
                 .id(jit)
