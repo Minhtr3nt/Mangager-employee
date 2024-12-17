@@ -6,8 +6,11 @@ export default function Login(){
     const [username, setUsername] = useState("");
     const [password,setPassword] = useState("");
     const navigate = useNavigate();
-    
+     const removeToken = () => {
+        localStorage.removeItem("accessToken");
+    };
    useEffect(()=>{
+            removeToken();
             const accessToken = getToken();
 
             if(accessToken){
@@ -16,8 +19,9 @@ export default function Login(){
     },[navigate]);
     const  handleSubmit = (e)=>{
         e.preventDefault();
+        removeToken();
         async function fetchLogin(){
-        
+            
              await fetch("http://localhost:8080/identity/auth/token",{
                 method: "POST",
                 headers:{

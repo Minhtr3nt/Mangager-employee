@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { getToken, removeToken } from "../../services/localStorageService";
 
@@ -11,7 +11,7 @@ export default function Home() {
         const response = await fetch(
             "http://localhost:8080/identity/users/myInfo",
             {
-                method: "GET",
+                method: "GET", 
                 headers: {
                     Authorization: `Bearer ${accessToken}`,
                 }
@@ -48,7 +48,7 @@ export default function Home() {
             )
             if (sign) {
                 alert("Nhân viên " + userName + " đã bị xóa!!")
-            
+                navigate("/");
             }
         }
     }

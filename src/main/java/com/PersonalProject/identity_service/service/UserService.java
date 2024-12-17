@@ -9,14 +9,17 @@ import com.PersonalProject.identity_service.enity.Role;
 import com.PersonalProject.identity_service.enity.User;
 import com.PersonalProject.identity_service.exception.AppException;
 import com.PersonalProject.identity_service.exception.ErrorCode;
+import com.PersonalProject.identity_service.mapper.RoleMapper;
 import com.PersonalProject.identity_service.mapper.UserMapper;
 import com.PersonalProject.identity_service.repository.RoleRepository;
 import com.PersonalProject.identity_service.repository.UserRepository;
+import com.PersonalProject.identity_service.specification.UserSpecification;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -26,6 +29,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -36,6 +40,7 @@ public class UserService {
 
     UserRepository userRepository;
     UserMapper userMapper;
+    RoleMapper roleMapper;
     PasswordEncoder passwordEncoder;
     RoleRepository roleRepository;
 
@@ -70,7 +75,7 @@ public class UserService {
         return userMapper.toUserResponse(user);
     }
 
-    @PreAuthorize("hasAuthority('APPROVE_POST')")
+    @PreAuthorize("hasAuthority('CREATE_POST')")
     public List<UserResponse> getUsers(){
 
         return userRepository.findAll().stream()
@@ -89,7 +94,7 @@ public class UserService {
         var User = userRepository.save(user);
         return userMapper.toUserResponse(User);
     }
-    @PostAuthorize("returnObject.username == authentication.name") // Khi mà user name truyền vào trùng với username trả về thì cho phép chạy
+    @PostAuthorize("returnObject.username == authentication.name") //Khi mà user name truyền vào trùng với username trả về thì cho phép chạy
     public UserResponse getUser(String Id){
 
             return userMapper.toUserResponse(userRepository.findById(Id)
@@ -97,9 +102,21 @@ public class UserService {
 
     }
     public void deleteUser(String userId){
-        userRepository.deleteById(userId);
+        User user = userRepository.findById(userId).orElseThrow(()->new AppException(ErrorCode.USER_NOT_EXISTED));
+         userRepository.deleteById(userId);
 
     }
+
+    public List<UserResponse> searchUsers(String username, String firstName){
+        Specification<User> specification = Specification.where(UserSpecification.hasUsername(username))
+                .and(UserSpecification.hasFirstName(firstName));
+        return userRepository.findAll(specification).stream().map(user -> {
+            UserResponse userResponse = userMapper.toUserResponse(user);
+            userResponse.setRoles(user.getRoles().stream().map(roleMapper::toRoleResponse).collect(Collectors.toSet()));
+            return userResponse;
+        }).toList();// trả về danh sách người dùng
+    }
+
 
 
 }

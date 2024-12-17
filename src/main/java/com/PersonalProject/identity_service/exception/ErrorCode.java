@@ -15,6 +15,9 @@ public enum ErrorCode {
     UNAUTHENTICATED(1006, "Unauthenticated", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1007, "You do not have permission", HttpStatus.FORBIDDEN),
     INVALID_DOB(1008, "You must me at least {min} years old", HttpStatus.BAD_REQUEST),
+    FIRST_NAME_REQUIRED(1009, "First name is required, don't let it empty", HttpStatus.BAD_REQUEST),
+    LAST_NAME_REQUIRED(1010,"First name is required, don't let it empty", HttpStatus.BAD_REQUEST),
+    USERNAME_INVALID_FORMAT(1011, "You username are not correct format, only text, number, dot, underline and cross ", HttpStatus.BAD_REQUEST)
     ;
 
     ErrorCode(int code, String message, HttpStatusCode statusCode) {

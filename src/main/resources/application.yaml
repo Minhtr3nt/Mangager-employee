@@ -16,6 +16,6 @@ jpa:
   show-sql: true
 
 jwt:
-  signerKey: "B9BL8na76SRscO0D3+MT4CUfV7i5C2q/cVf4gKkEuUXgaqvLNDy8840zA41WhkKn"
+  signerKey: ${JWT_SIGNERKEY}
   valid-duration: 3600 # in second
   refreshable-duration: 36000 # in second
