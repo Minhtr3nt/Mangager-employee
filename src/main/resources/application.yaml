@@ -5,7 +5,7 @@ server:
 
 spring:
   datasource:
-    url: ${DBMS_CONNECTION:jdbc:mysql://172.17.0.2:3306/identity_service}
+    url: ${DBMS_CONNECTION:jdbc:mysql://mysql:3306/identity_service}
     driverClassName: "com.mysql.cj.jdbc.Driver"
     username: ${DBMS_USERNAME:root}
     password: ${DBMS_PASSWORD:root}
@@ -16,6 +16,6 @@ jpa:
   show-sql: true
 
 jwt:
-  signerKey: ${JWT_SIGNERKEY}
+  signerKey: "Que8bPQKJl8xJ2rtzLkjGty+PLRhO1tvCeCRPypxmqvLRuH97sdNY6Xu6ADzBfxB"
   valid-duration: 3600 # in second
   refreshable-duration: 36000 # in second
